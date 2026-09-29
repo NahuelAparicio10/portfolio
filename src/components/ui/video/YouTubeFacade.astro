@@ -1,0 +1,186 @@
+---
+import type { ImageMetadata } from 'astro';
+import { Image } from 'astro:assets';
+import { useTranslations } from '../../../i18n';
+import { DEFAULT_LOCALE, type Locale } from '../../../lib/href';
+
+/**
+ * Click-to-load YouTube player.
+ *
+ * Mounting the embed on page load cost around 500 KB of player script and a
+ * round of third-party cookies on every visit, whether anyone pressed play or
+ * not. This renders a local thumbnail and a play button; the iframe only
+ * exists once the visitor asks for it.
+ *
+ * Thumbnails live in src/assets/images/video/<id>.jpg. Loading them from
+ * img.youtube.com would let Google back in through the side door, which is
+ * exactly what the facade is here to avoid.
+ *
+ * Without JavaScript the trigger is an ordinary link to the video on YouTube.
+ */
+interface Props {
+  id: string;
+  title: string;
+  /** Used when no local thumbnail exists for this video. */
+  fallbackImage?: ImageMetadata;
+  locale?: Locale;
+}
+
+const { id, title, fallbackImage, locale = DEFAULT_LOCALE } = Astro.props as Props;
+const t = useTranslations(locale);
+
+const thumbnails = import.meta.glob<{ default: ImageMetadata }>('../../../assets/images/video/*.jpg', { eager: true });
+const thumbnail = thumbnails[`../../../assets/images/video/${id}.jpg`]?.default ?? fallbackImage;
+---
+
+<div class="yt-facade" data-yt-facade>
+  <a
+    href={`https://www.youtube.com/watch?v=${id}`}
+    class="yt-facade-trigger"
+    role="button"
+    data-yt-trigger
+    data-yt-id={id}
+    data-yt-title={title}
+    aria-label={`${t.showcase.playVideo}: ${title}`}
+  >
+    {thumbnail && <Image src={thumbnail} alt="" width={1280} height={720} />}
+    <span class="yt-facade-play" aria-hidden="true">
+      <svg viewBox="0 0 68 48" width="68" height="48">
+        <path class="yt-facade-play-bg" d="M66.5 7.7a8.5 8.5 0 0 0-6-6C55.2.3 34 .3 34 .3s-21.2 0-26.5 1.4a8.5 8.5 0 0 0-6 6C.1 13 .1 24 .1 24s0 11 1.4 16.3a8.5 8.5 0 0 0 6 6C12.8 47.7 34 47.7 34 47.7s21.2 0 26.5-1.4a8.5 8.5 0 0 0 6-6C67.9 35 67.9 24 67.9 24s0-11-1.4-16.3Z" />
+        <path fill="#fff" d="M45 24 27 14v20z" />
+      </svg>
+    </span>
+    <span class="yt-facade-label">{t.showcase.watchOnYouTube}</span>
+  </a>
+</div>
+
+<style>
+  .yt-facade {
+    position: relative;
+    max-width: 880px;
+    margin: 0 auto;
+    aspect-ratio: 16 / 9;
+    border-radius: 12px;
+    overflow: hidden;
+    background: var(--navy-900);
+    box-shadow: var(--box-shadow);
+  }
+
+  .yt-facade-trigger,
+  .yt-facade :global(iframe) {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+
+  .yt-facade-trigger {
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+    text-decoration: none;
+  }
+
+  .yt-facade-trigger :global(img) {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 0;
+    transition: transform var(--motion-slow) var(--motion-ease), filter var(--motion-base) var(--motion-ease);
+  }
+
+  .yt-facade-play {
+    position: relative;
+    display: grid;
+    place-items: center;
+    filter: drop-shadow(0 4px 14px rgba(0, 0, 0, 0.5));
+    transition: transform var(--motion-fast) var(--motion-ease);
+  }
+
+  .yt-facade-play-bg {
+    fill: rgba(7, 11, 22, 0.82);
+    transition: fill var(--motion-fast) var(--motion-ease);
+  }
+
+  .yt-facade-label {
+    position: absolute;
+    right: 0.9rem;
+    bottom: 0.7rem;
+    padding: 0.15rem 0.6rem;
+    border-radius: 999px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    background: rgba(7, 11, 22, 0.78);
+  }
+
+  .yt-facade-trigger:hover .yt-facade-play-bg,
+  .yt-facade-trigger:focus-visible .yt-facade-play-bg {
+    fill: #ff0033;
+  }
+
+  .yt-facade-trigger:hover .yt-facade-play,
+  .yt-facade-trigger:focus-visible .yt-facade-play {
+    transform: scale(1.08);
+  }
+
+  .yt-facade-trigger:hover :global(img) {
+    transform: scale(1.03);
+    filter: brightness(1.08);
+  }
+
+  /* The trigger fills the frame, so the global outline-offset would draw the
+     focus ring outside the clipped box where nobody could see it. */
+  .yt-facade-trigger:focus-visible {
+    outline-offset: -4px;
+    border-radius: 12px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .yt-facade-trigger:hover :global(img),
+    .yt-facade-trigger:hover .yt-facade-play,
+    .yt-facade-trigger:focus-visible .yt-facade-play {
+      transform: none;
+    }
+  }
+</style>
+
+<script>
+  // Delegated on the document, which survives <ClientRouter /> navigations, so
+  // it is registered exactly once no matter how many pages are visited.
+  function activate(trigger: HTMLElement) {
+    const id = trigger.dataset.ytId;
+    if (!id) return;
+
+    const iframe = document.createElement('iframe');
+    // The privacy-enhanced domain sets no cookies until playback starts.
+    iframe.src = `https://www.youtube-nocookie.com/embed/${encodeURIComponent(id)}?autoplay=1&rel=0`;
+    iframe.title = trigger.dataset.ytTitle ?? '';
+    iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+    iframe.allowFullscreen = true;
+    iframe.referrerPolicy = 'strict-origin-when-cross-origin';
+
+    trigger.replaceWith(iframe);
+    // Keep keyboard users where they were instead of dropping focus to <body>.
+    iframe.focus();
+  }
+
+  document.addEventListener('click', (event) => {
+    const trigger = (event.target as Element).closest<HTMLElement>('[data-yt-trigger]');
+    if (!trigger) return;
+    event.preventDefault();
+    activate(trigger);
+  });
+
+  // role="button" promises Space as well as Enter; a link only answers Enter.
+  document.addEventListener('keydown', (event) => {
+    if (event.key !== ' ') return;
+    const trigger = (event.target as Element).closest<HTMLElement>('[data-yt-trigger]');
+    if (!trigger) return;
+    event.preventDefault();
+    activate(trigger);
+  });
+</script>

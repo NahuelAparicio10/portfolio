@@ -17,14 +17,15 @@ const posts = await getCollection('es');
 // Sort by date descending for navigation
 const sorted = posts.slice().sort((a, b) => +b.data.pubDate - +a.data.pubDate);
 const index = sorted.findIndex((p) => p.id === post.id);
-const prev = index < sorted.length - 1 ? { id: sorted[index + 1].id, title: sorted[index + 1].data.title } : null;
-const next = index > 0 ? { id: sorted[index - 1].id, title: sorted[index - 1].data.title } : null;
+const toNavItem = (entry: (typeof sorted)[number]) => ({ id: entry.id, title: entry.data.title, image: entry.data.heroImage });
+const prev = index < sorted.length - 1 ? toNavItem(sorted[index + 1]) : null;
+const next = index > 0 ? toNavItem(sorted[index - 1]) : null;
 
 const { Content } = await render(post);
 const html = await Astro.slots.render('default');
 const readingTimeMin = calculateReadingTimeFromHtml(html ?? '');
 ---
 
-<BlogPost {...post.data} prevPost={prev} nextPost={next}>
+<BlogPost {...post.data} id={post.id} prevPost={prev} nextPost={next}>
   <Content />
 </BlogPost>
