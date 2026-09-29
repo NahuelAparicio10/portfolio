@@ -18,7 +18,10 @@ const ctas = [
 ];
 ---
 
-<section class="hero-section relative w-full overflow-hidden m-0">
+<!-- data-hero-background picks the default layer: "video" or "shader".
+     `?hero=shader` / `?hero=video` overrides it, so both can be compared in
+     the same composition before deciding which one stays. -->
+<section class="hero-section relative w-full overflow-hidden m-0" data-hero data-hero-background="video">
   <!-- The poster is not just a placeholder: iOS Safari in Low Power Mode
        refuses to autoplay even muted + playsinline, and that is a system
        decision we cannot override. Without a poster those visitors would get
@@ -44,7 +47,11 @@ const ctas = [
     aria-hidden="true"
   ></div>
 
-  <div class="absolute inset-0 bg-black/86 z-10"></div>
+  <!-- Generative background. Stays hidden until the shader has a context and
+       is actually drawing, so a failure never leaves a black box. -->
+  <canvas class="hero-canvas absolute inset-0 w-full h-full z-0" aria-hidden="true" data-hero-canvas></canvas>
+
+  <div class="hero-overlay absolute inset-0 bg-black/86 z-10"></div>
 
   <div class="hero-content relative z-20 px-4 sm:px-6 text-center">
     <h1 class="hero-name font-extrabold tracking-tight text-foreground mb-4">
@@ -165,9 +172,43 @@ const ctas = [
     display: none;
   }
 
+  /* Shown only once the shader is drawing (data-hero-mode="shader"). */
+  .hero-canvas {
+    display: none;
+  }
+
+  [data-hero-mode="shader"] .hero-canvas {
+    display: block;
+  }
+
+  [data-hero-mode="shader"] .hero-video,
+  [data-hero-mode="poster"] .hero-video {
+    display: none;
+  }
+
+  /* Shader requested but WebGL refused: the still, never an empty box. */
+  [data-hero-mode="poster"] .hero-poster {
+    display: block;
+  }
+
+  /* The shader is dark by design and already calms the centre behind the
+     headline, so it needs far less than the 86% the video takes. */
+  [data-hero-mode="shader"] .hero-overlay {
+    background-color: rgb(0 0 0 / 0.35);
+  }
+
   @media (prefers-reduced-motion: reduce) {
-    .hero-video {
-      display: none;
+    .hero-video,
+    .hero-canvas {
+      display: none !important;
+    }
+
+    .hero-poster {
+      display: block !important;
+    }
+
+    [data-hero-mode="shader"] .hero-overlay {
+      background-color: rgb(0 0 0 / 0.86);
     }
 
     .hero-poster {
@@ -220,4 +261,42 @@ const ctas = [
       video.pause();
     });
   }
+
+  // ---------------------------------------------------------------------
+  // Background layer: video (default) or generative shader.
+  // ---------------------------------------------------------------------
+  type HeroShader = import('../../lib/heroShader').HeroShader;
+  let activeShader: HeroShader | null = null;
+
+  function requestedBackground(hero: HTMLElement): string {
+    const override = new URLSearchParams(location.search).get('hero');
+    if (override === 'shader' || override === 'video') return override;
+    return hero.dataset.heroBackground ?? 'video';
+  }
+
+  async function initHeroBackground() {
+    const hero = document.querySelector<HTMLElement>('[data-hero]');
+    const canvas = hero?.querySelector<HTMLCanvasElement>('[data-hero-canvas]');
+    if (!hero || !canvas || hero.dataset.heroMode) return;
+    if (requestedBackground(hero) !== 'shader') return;
+
+    // Reduced motion: the CSS already shows the still; nothing to start.
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    const video = hero.querySelector<HTMLVideoElement>('[data-hero-video]');
+    video?.pause();
+
+    // Loaded on demand, so visitors on the video background never pay for it.
+    const { startHeroShader } = await import('../../lib/heroShader');
+    activeShader = startHeroShader(canvas, hero);
+    hero.dataset.heroMode = activeShader ? 'shader' : 'poster';
+  }
+
+  document.addEventListener('astro:page-load', initHeroBackground);
+
+  // Release the WebGL context before <ClientRouter /> swaps the page out.
+  document.addEventListener('astro:before-swap', () => {
+    activeShader?.destroy();
+    activeShader = null;
+  });
 </script>
