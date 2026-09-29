@@ -1,6 +1,6 @@
 ---
 title: 'PROTOTYPE BETWEEN SHADOWS'
-description: '3D top-down RPG prototype built in Unity. Gameplay programmer and designer. (Team of 2, 4 weeks)'
+description: '3D top-down RPG prototype built in Unity.'
 pubDate: '2024'
 heroImage: '../../assets/images/games/bs.png'
 youtubeTitle: 'Prototype Between Shadows'
@@ -8,21 +8,19 @@ youtubeID: 'ZU9XFBR0nNo'
 tags: ['Unity', '3D', 'PC', 'Controller']
 featured: false
 featuredOrder: 3 
+genre: '3D top-down RPG'
+dimension: '3D'
+engine: 'Unity'
+role: ['Gameplay Programmer', 'Designer']
+team: 'Team of 2'
+duration: '4 weeks'
+platforms: ['PC', 'Controller']
 ---
 
 import { Image } from 'astro:assets';
 import image from "../../assets/images/games/bs.png";
 import imageItchio from "../../assets/logos/itchio-logo.svg?url";
-
-###  **Project Info**  
-
-```markdown
-👤 Role: Gameplay Programmer & Designer  
-👥 Team Size: 2  
-⏳ Time frame: 4 weeks (1 months)  
-🎮 Engine: Unity  
-```
-<br />
+import ContributionPills from "../../components/ui/pill/ContributionPills.astro";
 
 ###  **About**
 
@@ -34,26 +32,7 @@ Our goal with this project was to craft an **immersive experience** where player
 
 ### **Contributions to the game**
 
-<div className="mt-4 mb-4 flex flex-wrap gap-2 ">
-  {[
-    "Player Mechanics",
-    "Ability System Scalable",
-    "UI & Menus",
-    "Sound"
-  ].map((label) => (
-    <span
-      key={label}
-      className="inline-grid place-items-center rounded-full px-3 py-1 text-xs font-medium leading-[1]"
-      style={{
-        background: "rgba(var(--accent-rgb),0.1)",
-        color: "var(--accent)",
-        border: "1px solid rgba(var(--accent-rgb),0.3)"
-      }}
-    >
-      {label}
-    </span>
-  ))}
-</div>
+<ContributionPills items={["Player Mechanics", "Ability System Scalable", "UI & Menus", "Sound"]} />
 
 <div className="text-justify">
 

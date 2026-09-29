@@ -1,6 +1,6 @@
 ---
 title: 'INTO THE WOODS'
-description: 'Plataformas 2D desarrollado en Unity. Proyecto individual. (8 semanas)'
+description: 'Plataformas 2D desarrollado en Unity como proyecto individual.'
 pubDate: '2022'
 heroImage: '../../assets/images/games/itw.png'
 youtubeTitle: 'Into The Woods'
@@ -8,22 +8,19 @@ youtubeID: 'qzbrbVs9Nfs'
 tags: ['Unity', '2D', 'Platformer', 'PC']
 featured: false
 featuredOrder: 7 
+genre: 'Plataformas 2D'
+dimension: '2D'
+engine: 'Unity'
+role: ['Desarrollador en solitario']
+team: 'Individual'
+duration: '8 semanas'
+platforms: ['PC']
 ---
 
 import { Image } from 'astro:assets';
 import image from "../../assets/images/games/IntoTheWoods.png";
 import imageItchio from "../../assets/logos/itchio-logo.svg?url";
-
-###  **Información del proyecto**  
-
-```markdown
-👤 Rol: Proyecto en solitario
-👥 Equipo: 1  
-⏳ Duración: 8 semanas (2 meses)  
-🎮 Motor: Unity  
-```
-
-<br />
+import ContributionPills from "../../components/ui/pill/ContributionPills.astro";
 
 ###  **Sobre el juego**
 
@@ -35,29 +32,7 @@ Fue un **proyecto en solitario** que me permitió profundizar en desarrollo de v
 
 ### **Contribuciones al juego**
 
-<div className="mt-4 mb-4 flex flex-wrap gap-2 ">
-  {[
-    "C#",
-    "UI & UX",
-    "Integración Arte",
-    "Game Design",
-    "Level Design",
-    "Implementación de Sonido"
-
-  ].map((label) => (
-    <span
-      key={label}
-      className="inline-grid place-items-center rounded-full px-3 py-1 text-xs font-medium leading-[1]"
-      style={{
-        background: "rgba(var(--accent-rgb),0.1)",
-        color: "var(--accent)",
-        border: "1px solid rgba(var(--accent-rgb),0.3)"
-      }}
-    >
-      {label}
-    </span>
-  ))}
-</div>
+<ContributionPills items={["C#", "UI & UX", "Integración Arte", "Game Design", "Level Design", "Implementación de Sonido"]} />
 
 <div className="text-justify">
 Al ser un **proyecto individual**, me encargué de todas las áreas del juego:

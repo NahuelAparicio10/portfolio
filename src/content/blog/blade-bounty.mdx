@@ -1,6 +1,6 @@
 ---
 title: 'BLADE BOUNTY'
-description: '3D survivor hack-and-slash built in Unity. Gameplay programmer, UI programmer and designer. (Team of 4, 24 weeks)'
+description: '3D survivor hack-and-slash built in Unity.'
 pubDate: '2024'
 heroImage: '../../assets/images/games/bb.png'
 youtubeTitle: 'Blade Bounty'
@@ -8,21 +8,20 @@ youtubeID: 'Ft__aWoUaWk'
 tags: ['Unity', 'PC', 'Controller', '3D']
 featured: true
 featuredOrder: 2 
+genre: '3D survivor hack-and-slash'
+dimension: '3D'
+engine: 'Unity'
+role: ['Gameplay Programmer', 'UI Programmer', 'Designer']
+team: 'Team of 4'
+duration: '24 weeks'
+platforms: ['PC', 'Controller']
 ---
 
 import { Image } from 'astro:assets';
 import image from "../../assets/images/games/bb.png";
 import imageItchio from "../../assets/logos/itchio-logo.svg?url";
+import ContributionPills from "../../components/ui/pill/ContributionPills.astro";
 
-###  **Project Info**  
-
-```markdown
-👤 Role: Gameplay Programmer, UI Programmer and Designer 
-👥 Team Size: 4  
-⏳ Time frame: 24 weeks (6 months)  
-🎮 Engine: Unity  
-```
-<br />
 ###  **About**
 <div className="text-justify">
 
@@ -32,30 +31,7 @@ Our goal with this project was to create **engaging gameplay mechanics** with **
 </div>
 ### **Contributions to the game**
 
-<div className="mt-4 mb-4 flex flex-wrap gap-2 ">
-  {[
-    "Combat System",
-    "Enemy AI",
-    "Item System",
-    "Inventory System",
-    "Menus System",
-    "UI & UX",
-    "Game Experience & Combo Meter",
-
-  ].map((label) => (
-    <span
-      key={label}
-      className="inline-grid place-items-center rounded-full px-3 py-1 text-xs font-medium leading-[1]"
-      style={{
-        background: "rgba(var(--accent-rgb),0.1)",
-        color: "var(--accent)",
-        border: "1px solid rgba(var(--accent-rgb),0.3)"
-      }}
-    >
-      {label}
-    </span>
-  ))}
-</div>
+<ContributionPills items={["Combat System", "Enemy AI", "Item System", "Inventory System", "Menus System", "UI & UX", "Game Experience & Combo Meter"]} />
 <div className="text-justify">
 
 I was responsible for programming the **combat system**, developing **enemy AI**, **item system** and creating the **inventory** and **menus**. I also implemented the **game experience and combo meter mechanics**, and contributed to the development and design of various abilities.

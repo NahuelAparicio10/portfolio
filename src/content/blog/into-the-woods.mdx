@@ -1,6 +1,6 @@
 ---
 title: 'INTO THE WOODS'
-description: '2D platformer developed in Unity as a solo project. (Solo project, 8 weeks)'
+description: '2D platformer developed in Unity as a solo project.'
 pubDate: '2022'
 heroImage: '../../assets/images/games/itw.png'
 youtubeTitle: 'Into The Woods'
@@ -8,22 +8,19 @@ youtubeID: 'qzbrbVs9Nfs'
 tags: ['Unity', '2D', 'Platformer', 'PC']
 featured: false
 featuredOrder: 7 
+genre: '2D platformer'
+dimension: '2D'
+engine: 'Unity'
+role: ['Solo Developer']
+team: 'Solo'
+duration: '8 weeks'
+platforms: ['PC']
 ---
 
 import { Image } from 'astro:assets';
 import image from "../../assets/images/games/IntoTheWoods.png";
 import imageItchio from "../../assets/logos/itchio-logo.svg?url";
-
-###  **Project Info**  
-
-```markdown
-👤 Role: Solo Project
-👥 Team Size: 1  
-⏳ Time frame: 8 weeks (2 months)  
-🎮 Engine: Unity  
-```
-
-<br />
+import ContributionPills from "../../components/ui/pill/ContributionPills.astro";
 
 ###  **About**
 
@@ -35,29 +32,7 @@ This was a **solo project** that allowed me to deepen my understanding of game d
 
 ### **Contributions to the game**
 
-<div className="mt-4 mb-4 flex flex-wrap gap-2 ">
-  {[
-    "C#",
-    "UI & UX",
-    "Art Integration",
-    "Game Design",
-    "Level Design",
-    "Sound Implementation"
-
-  ].map((label) => (
-    <span
-      key={label}
-      className="inline-grid place-items-center rounded-full px-3 py-1 text-xs font-medium leading-[1]"
-      style={{
-        background: "rgba(var(--accent-rgb),0.1)",
-        color: "var(--accent)",
-        border: "1px solid rgba(var(--accent-rgb),0.3)"
-      }}
-    >
-      {label}
-    </span>
-  ))}
-</div>
+<ContributionPills items={["C#", "UI & UX", "Art Integration", "Game Design", "Level Design", "Sound Implementation"]} />
 
 <div className="text-justify">
 Since this was a **solo project**, I was responsible for every aspect of the game, including:

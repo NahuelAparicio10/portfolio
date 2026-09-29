@@ -1,6 +1,6 @@
 ---
 title: 'EDEN'
-description: '2D roguelike built in Unity. Gameplay programmer and designer. (Team of 2, 16 weeks)'
+description: '2D roguelike built in Unity.'
 pubDate: '2023'
 heroImage: '../../assets/images/games/eden_menu.png'
 youtubeTitle: 'Eden'
@@ -8,21 +8,18 @@ youtubeID: '614JOiG-xDQ'
 tags: ['Unity', '2D', 'PC', 'Controller']
 featured: false
 featuredOrder: 6 
+genre: '2D roguelike'
+dimension: '2D'
+engine: 'Unity'
+role: ['Gameplay Programmer', 'Designer']
+team: 'Team of 2'
+duration: '16 weeks'
+platforms: ['PC', 'Controller']
 ---
 import { Image } from 'astro:assets';
 import image from "../../assets/images/games/eden_gameplay.png";
 import imageItchio from "../../assets/logos/itchio-logo.svg?url";
-
-###  **Project Info**  
-
-```markdown
-👤 Role: Gameplay Programmer & Designer
-👥 Team Size: 2  
-⏳ Time frame: 16 weeks (4 months)
-🎮 Engine: Unity  
-```
-
-<br />
+import ContributionPills from "../../components/ui/pill/ContributionPills.astro";
 
 ###  **About**
 <div className="text-justify">
@@ -33,30 +30,7 @@ Our goal with this project was to create **engaging gameplay** centered around t
 
 
 ### **Contributions to the game**
-<div className="mt-4 mb-4 flex flex-wrap gap-2 ">
-  {[
-    "Quest System",
-    "JSON Save System",
-    "C#",
-    "Dash mechanics",
-    "QA",
-    "UI & UX",
-    "Game Design",
-
-  ].map((label) => (
-    <span
-      key={label}
-      className="inline-grid place-items-center rounded-full px-3 py-1 text-xs font-medium leading-[1]"
-      style={{
-        background: "rgba(var(--accent-rgb),0.1)",
-        color: "var(--accent)",
-        border: "1px solid rgba(var(--accent-rgb),0.3)"
-      }}
-    >
-      {label}
-    </span>
-  ))}
-</div>
+<ContributionPills items={["Quest System", "JSON Save System", "C#", "Dash mechanics", "QA", "UI & UX", "Game Design"]} />
 <div className="text-justify">
 In this game, I **designed and programmed several dash mechanics**, as well as various **rooms and interactables.** I implemented the **quest system and JSON-based save/load data**, along with the corresponding **UI elements**, I also did **QA testing** to review and detect different bugs and balance gameplay statistics. 
 

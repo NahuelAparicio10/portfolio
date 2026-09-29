@@ -1,6 +1,6 @@
 ---
 title: 'BLADE BOUNTY'
-description: 'Juego 3D survivor hack-and-slash, desarrollado en Unity. Programador de gameplay, de UI y diseñador. (Equipo de 4, 24 semanas)'
+description: 'Juego 3D survivor hack-and-slash, desarrollado en Unity.'
 pubDate: '2024'
 heroImage: '../../assets/images/games/bb.png'
 youtubeTitle: 'Blade Bounty'
@@ -8,21 +8,20 @@ youtubeID: 'Ft__aWoUaWk'
 tags: ['Unity', 'PC', 'Controller', '3D']
 featured: true
 featuredOrder: 2 
+genre: 'Survivor hack-and-slash 3D'
+dimension: '3D'
+engine: 'Unity'
+role: ['Programador de gameplay', 'Programador de UI', 'Diseñador']
+team: 'Equipo de 4'
+duration: '24 semanas'
+platforms: ['PC', 'Mando']
 ---
 
 import { Image } from 'astro:assets';
 import image from "../../assets/images/games/bb.png";
 import imageItchio from "../../assets/logos/itchio-logo.svg?url";
+import ContributionPills from "../../components/ui/pill/ContributionPills.astro";
 
-###  **Información del proyecto**  
-
-```markdown
-👤 Rol: Programación de gameplay, programación de UI y diseño.
-👥 Equipo: 4  
-⏳ Duración: 24 semanas (6 meses)  
-🎮 Motor: Unity  
-```
-<br />
 ###  **Sobre el juego**
 <div className="text-justify">
 
@@ -33,30 +32,7 @@ El objetivo del proyecto fue diseñar **mecánicas de juego atractivas y dinámi
 </div>
 ### **Contribuciones al juego**
 
-<div className="mt-4 mb-4 flex flex-wrap gap-2 ">
-  {[
-    "Sistema de combate",
-    "IA de enemigos",
-    "Sistema de objetos",
-    "Sistema de inventario",
-    "Sistema de menús",
-    "UI & UX",
-    "Experiencia de juego",
-
-  ].map((label) => (
-    <span
-      key={label}
-      className="inline-grid place-items-center rounded-full px-3 py-1 text-xs font-medium leading-[1]"
-      style={{
-        background: "rgba(var(--accent-rgb),0.1)",
-        color: "var(--accent)",
-        border: "1px solid rgba(var(--accent-rgb),0.3)"
-      }}
-    >
-      {label}
-    </span>
-  ))}
-</div>
+<ContributionPills items={["Sistema de combate", "IA de enemigos", "Sistema de objetos", "Sistema de inventario", "Sistema de menús", "UI & UX", "Experiencia de juego"]} />
 <div className="text-justify">
 
 Me encargué de programar el **sistema de combate**, desarrollar la **IA de los enemigos**, el **sistema de objetos**, así como de crear el **inventario** y los **menús**. También implementé un sistema de medición de combos y participé en el diseño y desarrollo de diferentes habilidades.

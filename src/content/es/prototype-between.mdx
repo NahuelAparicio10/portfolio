@@ -1,6 +1,6 @@
 ---
 title: 'PROTOTYPE BETWEEN SHADOWS'
-description: 'Prototipo RPG top-down 3D desarrollado en Unity. Programador de gameplay y diseñador. (Equipo de 2, 4 semanas)'
+description: 'Prototipo RPG top-down 3D desarrollado en Unity.'
 pubDate: '2024'
 heroImage: '../../assets/images/games/bs.png'
 youtubeTitle: 'Prototype Between Shadows'
@@ -8,21 +8,19 @@ youtubeID: 'ZU9XFBR0nNo'
 tags: ['Unity', '3D', 'PC', 'Controller']
 featured: false
 featuredOrder: 3 
+genre: 'RPG top-down 3D'
+dimension: '3D'
+engine: 'Unity'
+role: ['Programador de gameplay', 'Diseñador']
+team: 'Equipo de 2'
+duration: '4 semanas'
+platforms: ['PC', 'Mando']
 ---
 
 import { Image } from 'astro:assets';
 import image from "../../assets/images/games/bs.png";
 import imageItchio from "../../assets/logos/itchio-logo.svg?url";
-
-###  **Información del proyecto**  
-
-```markdown
-👤 Rol: Gameplay Programmer & Designer  
-👥 Equipo: 2  
-⏳ Duración: 4 semanas (1 mes)  
-🎮 Motor: Unity  
-```
-<br />
+import ContributionPills from "../../components/ui/pill/ContributionPills.astro";
 
 ###  **Sobre el juego**
 
@@ -34,26 +32,7 @@ Nuestro objetivo fue crear una **experiencia inmersiva** en la que el jugador pu
 
 ### **Contribuciones al juego**
 
-<div className="mt-4 mb-4 flex flex-wrap gap-2 ">
-  {[
-    "Mecánicas del jugador",
-    "Sistema de habilidades escalable",
-    "UI & Menús",
-    "Sonido"
-  ].map((label) => (
-    <span
-      key={label}
-      className="inline-grid place-items-center rounded-full px-3 py-1 text-xs font-medium leading-[1]"
-      style={{
-        background: "rgba(var(--accent-rgb),0.1)",
-        color: "var(--accent)",
-        border: "1px solid rgba(var(--accent-rgb),0.3)"
-      }}
-    >
-      {label}
-    </span>
-  ))}
-</div>
+<ContributionPills items={["Mecánicas del jugador", "Sistema de habilidades escalable", "UI & Menús", "Sonido"]} />
 
 <div className="text-justify">
 

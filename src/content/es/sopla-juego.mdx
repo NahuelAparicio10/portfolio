@@ -1,6 +1,6 @@
 ---
 title: 'EL SOPLA JUEGO'
-description: 'FPS 3D desarrollado en Unity. Único programador (equipo de 7, 24 semanas).'
+description: 'FPS 3D desarrollado en Unity.'
 pubDate: '2025'
 heroImage: '../../assets/images/games/soplajuego.png'
 youtubeTitle: 'El Sopla Juego'
@@ -8,22 +8,20 @@ youtubeID: 'avwgtVoUfO0'
 tags: ['Unity', '3D', 'PC', 'FPS']
 featured: true
 featuredOrder: 1 
+genre: 'FPS 3D'
+dimension: '3D'
+engine: 'Unity'
+role: ['Único programador']
+team: 'Equipo de 7'
+duration: '24 semanas'
+platforms: ['PC']
 ---
 
 import { Image } from 'astro:assets';
 import image from "../../assets/images/games/sopla_juego.png";
 import imageItchio from "../../assets/logos/itchio-logo.svg?url";
+import ContributionPills from "../../components/ui/pill/ContributionPills.astro";
 
-###  **Información del proyecto**  
-
-```markdown
-👤 Rol: Programador en solitario
-👥 Equipo: 7 
-⏳ Duración: 24 semanas (6 meses)  
-🎮 Motor: Unity
-```
-
-<br/>
 ###  **Sobre el juego**
 <div className="text-justify">
 
@@ -34,28 +32,7 @@ Este proyecto se desarrolló como Trabajo de Fin de Grado de otras personas que 
 
 ### **Contribuciones al juego**
 
-<div className="mt-4 mb-4 flex flex-wrap gap-2 ">
-  {[
-    "Mecánicas del jugador",
-    "Física de objetos",
-    "Sistema de diálogos",
-    "Sistema de misiones",
-    "Sistema de guardado",
-    "UI & UX"
-  ].map((label) => (
-    <span
-      key={label}
-      className="inline-grid place-items-center rounded-full px-3 py-1 text-xs font-medium leading-[1]"
-      style={{
-        background: "rgba(var(--accent-rgb),0.1)",
-        color: "var(--accent)",
-        border: "1px solid rgba(var(--accent-rgb),0.3)"
-      }}
-    >
-      {label}
-    </span>
-  ))}
-</div>
+<ContributionPills items={["Mecánicas del jugador", "Física de objetos", "Sistema de diálogos", "Sistema de misiones", "Sistema de guardado", "UI & UX"]} />
 
 <div className="text-justify">
 

@@ -1,6 +1,6 @@
 ---
 title: 'BETWEEN HELL & HEAVEN'
-description: 'Dash-centric survival built in Unity. Gameplay programmer and designer. (Team of 2, 2 weeks).'
+description: 'Dash-centric survival game built in Unity.'
 pubDate: 'Aug 12 2025'
 heroImage: '../../assets/images/games/bhb.png'
 youtubeTitle: 'Between Hell & Heaven'
@@ -8,22 +8,19 @@ youtubeID: 'CTjty93RrtA'
 tags: ['Unity', '2D', 'PC', 'Survival']
 featured: false
 featuredOrder: 4 
+genre: 'Dash-centric survival'
+dimension: '2D'
+engine: 'Unity'
+role: ['Gameplay Programmer', 'Designer']
+team: 'Team of 2'
+duration: '2 weeks'
+platforms: ['PC']
 ---
 import { Image } from 'astro:assets';
 import image from "../../assets/images/games/bhh.png";
 import imageItchio from "../../assets/logos/itchio-logo.svg?url";
+import ContributionPills from "../../components/ui/pill/ContributionPills.astro";
 
-
-###  **Project Info**  
-
-```markdown
-👤 Role: Gameplay Programmer & Designer
-👥 Team Size: 2  
-⏳ Time frame: 2 weeks 
-🎮 Engine: Unity  
-```
-
-<br />
 
 ###  **About**
 <div className="text-justify">
@@ -33,30 +30,7 @@ During development, our team focused on **clean, reusable code and the challenge
 </div>
 
 ### **Contributions to the game**
-<div className="mt-4 mb-4 flex flex-wrap gap-2 ">
-  {[
-    "Quest System",
-    "JSON Save System",
-    "C#",
-    "Dash mechanics",
-    "QA",
-    "UI & UX",
-    "Game Design",
-
-  ].map((label) => (
-    <span
-      key={label}
-      className="inline-grid place-items-center rounded-full px-3 py-1 text-xs font-medium leading-[1]"
-      style={{
-        background: "rgba(var(--accent-rgb),0.1)",
-        color: "var(--accent)",
-        border: "1px solid rgba(var(--accent-rgb),0.3)"
-      }}
-    >
-      {label}
-    </span>
-  ))}
-</div>
+<ContributionPills items={["Quest System", "JSON Save System", "C#", "Dash mechanics", "QA", "UI & UX", "Game Design"]} />
 <div className="text-justify">
 
 I **designed and programmed multiple dash mechanics**, implemented the **quest system and JSON-based save/load data**, along with the corresponding UI elements. Additionally, I conducted **QA testing** to identify bugs and balance gameplay statistics, ensuring a polished and enjoyable experience. 

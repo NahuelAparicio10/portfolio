@@ -1,6 +1,6 @@
 ---
 title: 'EDEN'
-description: 'Roguelike 2D desarrollado en Unity, centrado en el dash como única arma. Programador de gameplay y diseñador. (Team of 2, 16 weeks)'
+description: 'Roguelike 2D desarrollado en Unity, centrado en el dash como única arma.'
 pubDate: '2023'
 heroImage: '../../assets/images/games/eden_menu.png'
 youtubeTitle: 'Eden'
@@ -8,21 +8,18 @@ youtubeID: '614JOiG-xDQ'
 tags: ['Unity', '2D', 'PC', 'Controller']
 featured: false
 featuredOrder: 6 
+genre: 'Roguelike 2D'
+dimension: '2D'
+engine: 'Unity'
+role: ['Programador de gameplay', 'Diseñador']
+team: 'Equipo de 2'
+duration: '16 semanas'
+platforms: ['PC', 'Mando']
 ---
 import { Image } from 'astro:assets';
 import image from "../../assets/images/games/eden_gameplay.png";
 import imageItchio from "../../assets/logos/itchio-logo.svg?url";
-
-###  **Información del proyecto**  
-
-```markdown
-👤 Rol: Programador de gameplay y diseñador
-👥 Equipo: 2  
-⏳ Duración: 16 semanas (4 meses)
-🎮 Motor: Unity  
-```
-
-<br />
+import ContributionPills from "../../components/ui/pill/ContributionPills.astro";
 
 ###  **Sobre el juego**
 <div className="text-justify">
@@ -33,30 +30,7 @@ El objetivo fue construir una **jugabilidad adictiva** alrededor del **dash y un
 </div>
 
 ### **Contribuciones al juego**
-<div className="mt-4 mb-4 flex flex-wrap gap-2 ">
-  {[
-    "Sistema de misiones",
-    "Sistema de guardado JSON",
-    "C#",
-    "Mecánicas de dash",
-    "QA",
-    "UI & UX",
-    "Game Design",
-
-  ].map((label) => (
-    <span
-      key={label}
-      className="inline-grid place-items-center rounded-full px-3 py-1 text-xs font-medium leading-[1]"
-      style={{
-        background: "rgba(var(--accent-rgb),0.1)",
-        color: "var(--accent)",
-        border: "1px solid rgba(var(--accent-rgb),0.3)"
-      }}
-    >
-      {label}
-    </span>
-  ))}
-</div>
+<ContributionPills items={["Sistema de misiones", "Sistema de guardado JSON", "C#", "Mecánicas de dash", "QA", "UI & UX", "Game Design"]} />
 
 <div className="text-justify">
 

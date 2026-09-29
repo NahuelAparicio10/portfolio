@@ -1,6 +1,6 @@
 ---
 title: 'DEADLY MINER'
-description: 'FPS survival prototype built in Unity. Gameplay programmer and designer. (Team of 2, 4 weeks).'
+description: 'FPS survival prototype built in Unity.'
 pubDate: '2024'
 heroImage: '../../assets/images/games/fps.png'
 youtubeTitle: 'Prototype Deadly Miner'
@@ -8,22 +8,19 @@ youtubeID: 'lbuMbWeiUPo'
 tags: ['Unity', '3D', 'PC']
 featured: false
 featuredOrder: 5 
+genre: 'FPS survival'
+dimension: '3D'
+engine: 'Unity'
+role: ['Gameplay Programmer', 'Designer']
+team: 'Team of 2'
+duration: '4 weeks'
+platforms: ['PC']
 ---
 import { Image } from 'astro:assets';
 import image from "../../assets/images/games/miner.png";
 import imageItchio from "../../assets/logos/itchio-logo.svg?url";
+import ContributionPills from "../../components/ui/pill/ContributionPills.astro";
 
-
-###  **Project Info**  
-
-```markdown
-👤 Role: Gameplay Programmer & Designer
-👥 Team Size: 2  
-⏳ Time frame: 4 weeks (1 months)  
-🎮 Engine: Unity  
-```
-
-<br />
 
 ###  **About**
 <div className="text-justify">
@@ -33,27 +30,7 @@ The project allowed us to dive into the complexities of **first-person gameplay*
 </div>
 
 ### **Contributions to the game**
-<div className="mt-4 mb-4 flex flex-wrap gap-2 ">
-  {[
-    "Enemy AI",
-    "Menu System",
-    "Customized plug-in",
-    "Design Game Concept",
-    "Level Design"
-  ].map((label) => (
-    <span
-      key={label}
-      className="inline-grid place-items-center rounded-full px-3 py-1 text-xs font-medium leading-[1]"
-      style={{
-        background: "rgba(var(--accent-rgb),0.1)",
-        color: "var(--accent)",
-        border: "1px solid rgba(var(--accent-rgb),0.3)"
-      }}
-    >
-      {label}
-    </span>
-  ))}
-</div>
+<ContributionPills items={["Enemy AI", "Menu System", "Customized plug-in", "Design Game Concept", "Level Design"]} />
 <div className="text-justify">
 I developed the **enemy systems**, including **enemy AI behaviors (FSM)**, and created the **menu system.** **I customized and optimized the FPS plug-in** to better suit the game's mechanics, integrating it into the project. Additionally, I **designed the game concept** and was responsible for all aspects of level design, ensuring engaging exploration and progression. 
 

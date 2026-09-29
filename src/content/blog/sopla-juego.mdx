@@ -1,6 +1,6 @@
 ---
 title: 'EL SOPLA JUEGO'
-description: '3D FPS project developed in Unity. Solo programmer. (team of 7, 24 weeks).'
+description: '3D FPS developed in Unity.'
 pubDate: '2025'
 heroImage: '../../assets/images/games/soplajuego.png'
 youtubeTitle: 'El Sopla Juego'
@@ -8,22 +8,20 @@ youtubeID: 'avwgtVoUfO0'
 tags: ['Unity', '3D', 'PC', 'FPS']
 featured: true
 featuredOrder: 1 
+genre: '3D FPS'
+dimension: '3D'
+engine: 'Unity'
+role: ['Sole Programmer']
+team: 'Team of 7'
+duration: '24 weeks'
+platforms: ['PC']
 ---
 
 import { Image } from 'astro:assets';
 import image from "../../assets/images/games/sopla_juego.png";
 import imageItchio from "../../assets/logos/itchio-logo.svg?url";
+import ContributionPills from "../../components/ui/pill/ContributionPills.astro";
 
-###  **Project Info**  
-
-```markdown
-👤 Role: Solo Programmer
-👥 Team Size: 7  
-⏳ Time frame: 24 weeks (6 months)  
-🎮 Engine: Unity  
-```
-
-<br/>
 ###  **About**
 <div className="text-justify">
 
@@ -34,28 +32,7 @@ This project was developed as a final degree project in collaboration with a tea
 
 ### **Contributions to the game**
 
-<div className="mt-4 mb-4 flex flex-wrap gap-2 ">
-  {[
-    "Player mechanics",
-    "Objects Physics",
-    "Dialogue System",
-    "Quest System",
-    "Save System",
-    "UI & UX"
-  ].map((label) => (
-    <span
-      key={label}
-      className="inline-grid place-items-center rounded-full px-3 py-1 text-xs font-medium leading-[1]"
-      style={{
-        background: "rgba(var(--accent-rgb),0.1)",
-        color: "var(--accent)",
-        border: "1px solid rgba(var(--accent-rgb),0.3)"
-      }}
-    >
-      {label}
-    </span>
-  ))}
-</div>
+<ContributionPills items={["Player mechanics", "Objects Physics", "Dialogue System", "Quest System", "Save System", "UI & UX"]} />
 
 <div className="text-justify">
 

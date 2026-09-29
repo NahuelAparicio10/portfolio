@@ -1,6 +1,6 @@
 ---
 title: 'DEADLY MINER'
-description: 'Prototipo FPS desarrollado en Unity. Programador gameplay y diseñador. (Equipo de 2, 4 semanas).'
+description: 'Prototipo FPS de supervivencia desarrollado en Unity.'
 pubDate: '2024'
 heroImage: '../../assets/images/games/fps.png'
 youtubeTitle: 'Prototype Deadly Miner'
@@ -8,22 +8,19 @@ youtubeID: 'lbuMbWeiUPo'
 tags: ['Unity', '3D', 'PC']
 featured: false
 featuredOrder: 5 
+genre: 'FPS de supervivencia'
+dimension: '3D'
+engine: 'Unity'
+role: ['Programador de gameplay', 'Diseñador']
+team: 'Equipo de 2'
+duration: '4 semanas'
+platforms: ['PC']
 ---
 import { Image } from 'astro:assets';
 import image from "../../assets/images/games/miner.png";
 import imageItchio from "../../assets/logos/itchio-logo.svg?url";
+import ContributionPills from "../../components/ui/pill/ContributionPills.astro";
 
-
-###  **Información del proyecto**  
-
-```markdown
-👤 Rol: Programador de gameplay y diseñador
-👥 Equipo: 2  
-⏳ Duración: 4 semanas (1 mes)  
-🎮 Motor: Unity  
-```
-
-<br />
 
 ###  **Sobre el juego**
 <div className="text-justify">
@@ -33,27 +30,7 @@ El proyecto nos permitió profundizar en las complejidades del gameplay en prime
 </div>
 
 ### **Contribuciones al juego**
-<div className="mt-4 mb-4 flex flex-wrap gap-2 ">
-  {[
-    "IA de enemigos",
-    "Sistema de menus",
-    "Personalizar un plug-in",
-    "Concepto del juego",
-    "Level Design"
-  ].map((label) => (
-    <span
-      key={label}
-      className="inline-grid place-items-center rounded-full px-3 py-1 text-xs font-medium leading-[1]"
-      style={{
-        background: "rgba(var(--accent-rgb),0.1)",
-        color: "var(--accent)",
-        border: "1px solid rgba(var(--accent-rgb),0.3)"
-      }}
-    >
-      {label}
-    </span>
-  ))}
-</div>
+<ContributionPills items={["IA de enemigos", "Sistema de menus", "Personalizar un plug-in", "Concepto del juego", "Level Design"]} />
 <div className="text-justify">
 Desarrollé los **sistemas de enemigos**, incluyendo comportamientos de **IA basados en FSM (máquina de estados finitos)**, y creé el **sistema de menús.** Personalicé y optimicé el **plug-in de FPS** para ajustarlo a las mecánicas del juego e integrarlo en el proyecto. Además, diseñé el **concepto de juego** y me encargué de todo el **diseño de niveles**, asegurando una exploración y progresión atractivas.
 

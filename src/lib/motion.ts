@@ -24,8 +24,21 @@ function prefersReducedMotion(): boolean {
   return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 }
 
+/** Upper bound for a reveal transition to finish, matching --motion-slow. */
+const REVEAL_SETTLE_MS = 700;
+
 function revealNow(element: HTMLElement): void {
   element.classList.add(VISIBLE_CLASS);
+
+  // The stagger delay is only for the entrance. Left in place it would also
+  // delay every later hover on that child, so the last pill in a row would
+  // answer the pointer half a second late.
+  const children = element.querySelectorAll<HTMLElement>('[data-reveal-child]');
+  children.forEach((child) => {
+    if (!child.style.transitionDelay) return;
+    const delay = parseFloat(child.style.transitionDelay) || 0;
+    window.setTimeout(() => child.style.removeProperty('transition-delay'), delay + REVEAL_SETTLE_MS);
+  });
 }
 
 function applyStagger(element: HTMLElement): void {
@@ -110,4 +123,57 @@ export function initTouchSpotlight(root: ParentNode = document): void {
   );
 
   for (const card of cards) observer.observe(card);
+}
+
+/**
+ * Highlighter sweep on the bold phrases of a game post.
+ *
+ * Same fail-open rule as the reveal: the highlight is drawn by default, and
+ * only once this script marks the container (`data-highlight-ready`) does it
+ * start empty and sweep in as each phrase scrolls into view. Phrases in the
+ * same paragraph light up one after another, so the eye is led through the
+ * key points in reading order.
+ */
+const HIGHLIGHT_SCOPE = '[data-highlight]';
+const HIGHLIGHT_STEP_MS = 140;
+
+export function initProseHighlight(root: ParentNode = document): void {
+  if (prefersReducedMotion() || !('IntersectionObserver' in window)) return;
+
+  const scopes = Array.from(root.querySelectorAll<HTMLElement>(HIGHLIGHT_SCOPE));
+  for (const scope of scopes) {
+    if (scope.hasAttribute('data-highlight-ready')) continue;
+
+    // Bold inside headings is markdown habit (`### **About**`), not emphasis.
+    const phrases = Array.from(scope.querySelectorAll<HTMLElement>('strong, b')).filter((el) => !el.closest('h1, h2, h3, h4'));
+    if (phrases.length === 0) continue;
+
+    // Stagger resets per block, so a phrase far down the page does not wait
+    // for every phrase above it.
+    const indexInBlock = new Map<Element, number>();
+    for (const phrase of phrases) {
+      const block = phrase.closest('p, li, div') ?? scope;
+      const index = indexInBlock.get(block) ?? 0;
+      indexInBlock.set(block, index + 1);
+      phrase.style.transitionDelay = `${index * HIGHLIGHT_STEP_MS}ms`;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          const phrase = entry.target as HTMLElement;
+          phrase.classList.add('is-lit');
+          observer.unobserve(phrase);
+          // Drop the stagger once drawn, or it would also delay the hover fill.
+          const delay = parseFloat(phrase.style.transitionDelay) || 0;
+          window.setTimeout(() => phrase.style.removeProperty('transition-delay'), delay + REVEAL_SETTLE_MS);
+        }
+      },
+      { rootMargin: '0px 0px -15% 0px' },
+    );
+
+    scope.setAttribute('data-highlight-ready', '');
+    phrases.forEach((phrase) => observer.observe(phrase));
+  }
 }
