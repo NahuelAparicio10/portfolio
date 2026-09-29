@@ -45,11 +45,14 @@ const imageUrl = new URL(image.src, siteOrigin).toString();
 <!-- Scroll reveal. Re-runs after each client-side navigation, since the
      observer only ever saw the elements of the previous page. -->
 <script>
-  import { initReveal, initTouchSpotlight } from '../lib/motion';
+  import { initProseHighlight, initReveal, initTouchSpotlight } from '../lib/motion';
+  import { initShowcase } from '../lib/showcase';
 
   function boot() {
     initReveal();
     initTouchSpotlight();
+    initShowcase();
+    initProseHighlight();
   }
 
   boot();

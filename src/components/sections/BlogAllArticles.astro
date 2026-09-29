@@ -1,26 +1,27 @@
 ---
-import { useTranslations } from '../../i18n';
 import { DEFAULT_LOCALE, type Locale } from '../../lib/href';
 import type { Post } from '../../lib/post';
 import PostCard from '../ui/card/PostCard.astro';
 
 interface Props {
   posts: Post[];
+  /** Optional: the section header above the grid usually titles it already. */
   title?: string;
+  /** Let featured posts span two columns. Off for filtered lists (tags, categories). */
+  bento?: boolean;
   locale?: Locale;
 }
 
-const { posts = [], title, locale = DEFAULT_LOCALE } = Astro.props as Props;
-const t = useTranslations(locale);
-const heading = title ?? t.blog.title;
+const { posts = [], title, bento = false, locale = DEFAULT_LOCALE } = Astro.props as Props;
 ---
 
 <section class="space-y-6">
-  <h2 class="text-3xl font-bold">{heading}</h2>
-  <br/>
-  <div class="blog-grid" data-reveal>
+  {title && <h2 class="text-3xl font-bold">{title}</h2>}
+  <div class="showcase-grid" data-showcase-grid data-reveal>
     {posts.map((post) => (
-      <div data-reveal-child><PostCard post={post} locale={locale} /></div>
+      <div data-reveal-child class:list={['showcase-cell', bento && post.data.featured && 'showcase-cell--featured']}>
+        <PostCard post={post} locale={locale} featured={bento && post.data.featured} />
+      </div>
     ))}
   </div>
 </section>

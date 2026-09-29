@@ -29,6 +29,20 @@ export const en = {
     readingTime: 'min read',
     allArticles: 'All articles',
     share: 'Share',
+    subtitle: 'A selection of the games I’ve developed and contributed to. Click on them to see more info about it.',
+  },
+  showcase: {
+    facts: {
+      year: 'Year',
+      engine: 'Engine',
+      team: 'Team',
+      duration: 'Duration',
+      platforms: 'Platforms',
+      role: 'Role',
+    },
+    featured: 'Featured',
+    playVideo: 'Play video',
+    watchOnYouTube: 'Watch on YouTube',
   },
   skills: {
     expertiseTitle: 'CORE EXPERTISE',
@@ -75,6 +89,9 @@ export const en = {
   },
   projects: {
     title: 'Projects',
+    heading: 'PROJECTS',
+    subtitle: 'A showcase of projects I have developed and contributed to.',
+    metaDescription: 'Selected projects.',
   },
   footer: {
     title: 'CONTACT & CV',

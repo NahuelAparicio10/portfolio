@@ -3,6 +3,8 @@
 @import "./tokens.css";
 /* Project-specific utilities */
 @import "./utilities.css";
+/* Games and Projects grids */
+@import "./showcase.css";
 
 
 /* Fonts live in src/assets so Vite rewrites these URLs with the correct base.

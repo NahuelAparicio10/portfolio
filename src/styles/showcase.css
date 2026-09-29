@@ -1,0 +1,498 @@
+/* ------------------------------------------------------------------ *
+ * Showcase grid and card
+ *
+ * Shared by Games and Projects. Pointer-driven values (--mx, --my,
+ * --tilt-x, --tilt-y) are written by src/lib/showcase.ts from a single
+ * delegated listener on the grid; without it they keep their defaults
+ * and the card is simply static.
+ * ------------------------------------------------------------------ */
+
+.showcase-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 1.25rem;
+}
+
+/* Featured entries get a row of their own and are never set beside a normal
+   card. Sitting side by side with ordinary cards, they did not read as
+   featured at all. */
+@media (min-width: 768px) {
+  .showcase-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .showcase-cell--featured {
+    grid-column: span 2;
+  }
+}
+
+/* Six tracks: featured cards take half a row each (3 + 3), normal cards
+   a third (2 + 2 + 2). */
+@media (min-width: 1024px) {
+  .showcase-grid {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+
+  .showcase-grid > * {
+    grid-column: span 2;
+  }
+
+  .showcase-grid > .showcase-cell--featured {
+    grid-column: span 3;
+  }
+
+  /* An odd one out at the end of the featured run takes the full row
+     rather than pulling a normal card up beside it. */
+  .showcase-grid > .showcase-cell--featured:nth-child(odd):not(:has(+ .showcase-cell--featured)) {
+    grid-column: 1 / -1;
+  }
+
+  /* Breathing room between the featured row and the rest. */
+  .showcase-grid > .showcase-cell--featured {
+    margin-bottom: 0.75rem;
+  }
+}
+
+/* The reveal wrapper is the grid item, so it has to pass the row height on. */
+.showcase-cell {
+  display: flex;
+  min-width: 0;
+}
+
+/* ---------------------------------------------------------------- *
+ * Card
+ * ---------------------------------------------------------------- */
+
+/* Doubled class so this wins over `.card-surface:hover` and
+   `.card-surface.is-spotlit`, which set their own transform. The lift is
+   folded into the same transform instead of fighting it. */
+.card-surface.showcase-card {
+  --mx: 50%;
+  --my: 50%;
+  --tilt-x: 0deg;
+  --tilt-y: 0deg;
+  --lift: 0px;
+
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  overflow: hidden;
+  isolation: isolate;
+  transform: perspective(1000px) rotateX(var(--tilt-x)) rotateY(var(--tilt-y)) translateY(var(--lift));
+  transition:
+    transform var(--motion-fast) var(--motion-ease),
+    box-shadow 250ms ease,
+    border-color 250ms ease;
+}
+
+.card-surface.showcase-card.is-spotlit {
+  --lift: -3px;
+}
+
+@media (hover: hover) {
+  .card-surface.showcase-card:hover {
+    --lift: -3px;
+  }
+}
+
+/* Fixed ratio plus cover-crop: every card in a row gets the same cover
+   height, and no screenshot is stretched to fit the box. */
+.showcase-cover {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: var(--navy-900);
+}
+
+.showcase-cover img,
+.showcase-preview {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 0;
+}
+
+.showcase-cover img {
+  transition: transform var(--motion-slow) var(--motion-ease);
+}
+
+/* The clip sits on top of the still and fades in once playing, so a slow
+   first frame shows the image rather than a black box. */
+.showcase-preview {
+  opacity: 0;
+  transition: opacity var(--motion-base) var(--motion-ease);
+}
+
+.showcase-card.is-previewing .showcase-preview {
+  opacity: 1;
+}
+
+.showcase-genre {
+  position: absolute;
+  left: 0.75rem;
+  bottom: 0.75rem;
+  z-index: 1;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.4;
+  letter-spacing: 0.02em;
+  color: var(--color-text-primary);
+  background: rgba(7, 11, 22, 0.78);
+  border: 1px solid rgba(var(--accent-rgb), 0.35);
+  backdrop-filter: blur(4px);
+}
+
+/* Top row over the cover: featured chip on the left, 2D/3D on the right. */
+.showcase-badges {
+  position: absolute;
+  top: 0.75rem;
+  left: 0.75rem;
+  right: 0.75rem;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  pointer-events: none;
+}
+
+.showcase-featured-chip {
+  padding: 0.2rem 0.65rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 800;
+  line-height: 1.4;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--primary-foreground);
+  background: linear-gradient(100deg, var(--accent-light), var(--accent));
+  box-shadow: 0 4px 16px rgba(var(--accent-rgb), 0.45);
+}
+
+/* Genre above the title, only on featured cards from two columns up, where
+   the cover chip is hidden. On one column the chip stays and this would
+   repeat it. */
+.showcase-kicker {
+  display: none;
+  margin: 0;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent-light);
+}
+
+.showcase-body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 0.6rem;
+  padding: 1rem 1.1rem 1.15rem;
+}
+
+.showcase-title {
+  margin: 0;
+  font-size: 1.35rem;
+  line-height: 1.15;
+  color: var(--color-text-primary);
+}
+
+/* Fact sheet: always visible, never revealed on hover. */
+.showcase-facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--accent-light);
+}
+
+.showcase-facts li + li::before {
+  content: '·';
+  margin: 0 0.5rem;
+  color: var(--color-text-muted);
+}
+
+.showcase-description {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.55;
+  color: var(--color-text-muted);
+}
+
+.showcase-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: auto;
+  padding-top: 0.25rem;
+}
+
+/* Card pills: tinted like the rest of the accent UI, and each one answers
+   the pointer on its own. Tag links sit above the stretched card link, so
+   they stay clickable. */
+.showcase-tags .sw-tag {
+  padding: 0.25rem 0.65rem;
+  font-weight: 600;
+  color: var(--accent-light);
+  background: rgba(var(--accent-rgb), 0.1);
+  border: 1px solid rgba(var(--accent-rgb), 0.28);
+  transition:
+    transform var(--motion-fast) var(--motion-ease),
+    color var(--motion-fast) var(--motion-ease),
+    background-color var(--motion-fast) var(--motion-ease),
+    box-shadow var(--motion-fast) var(--motion-ease);
+}
+
+@media (hover: hover) {
+  /* Hovering the card lifts its pills in a quick ripple, left to right. */
+  .showcase-card:hover .showcase-tags .sw-tag {
+    transform: translateY(-2px);
+    border-color: rgba(var(--accent-rgb), 0.5);
+  }
+
+  .showcase-card:hover .showcase-tags .sw-tag:nth-child(2) { transition-delay: 30ms; }
+  .showcase-card:hover .showcase-tags .sw-tag:nth-child(3) { transition-delay: 60ms; }
+  .showcase-card:hover .showcase-tags .sw-tag:nth-child(4) { transition-delay: 90ms; }
+  .showcase-card:hover .showcase-tags .sw-tag:nth-child(5) { transition-delay: 120ms; }
+  .showcase-card:hover .showcase-tags .sw-tag:nth-child(n + 6) { transition-delay: 150ms; }
+
+  .showcase-card .showcase-tags .sw-tag:hover {
+    transform: translateY(-3px) scale(1.08);
+    color: var(--primary-foreground);
+    background: var(--accent);
+    box-shadow: 0 6px 16px rgba(var(--accent-rgb), 0.35);
+    transition-delay: 0ms;
+  }
+}
+
+.showcase-cta {
+  align-self: flex-start;
+  margin-top: 0.25rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--accent);
+}
+
+/* Pointer spotlight. Painted above the content but never intercepts
+   clicks, so the stretched link underneath still receives them. */
+.showcase-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  border-radius: inherit;
+  background: radial-gradient(
+    420px circle at var(--mx) var(--my),
+    rgba(var(--accent-rgb), 0.14),
+    transparent 45%
+  );
+  opacity: 0;
+  transition: opacity var(--motion-base) var(--motion-ease);
+}
+
+@media (hover: hover) {
+  .showcase-card:hover::after {
+    opacity: 1;
+  }
+
+  .showcase-card:hover .showcase-cover img {
+    transform: scale(1.06);
+  }
+}
+
+/* ---------------------------------------------------------------- *
+ * Featured card (bento)
+ *
+ * From two columns up, the cover fills the whole card and the text sits
+ * over a gradient. The card then takes its height from the row, so it
+ * lines up with its neighbour instead of towering over it.
+ * ---------------------------------------------------------------- */
+/* Featured cards carry a lit accent frame at rest, not only on hover: it is
+   the first thing that separates them from the ordinary ones. */
+.card-surface.showcase-card--featured {
+  border-color: rgba(var(--accent-rgb), 0.55);
+  box-shadow:
+    0 14px 40px rgba(0, 0, 0, 0.55),
+    0 0 0 1px rgba(var(--accent-rgb), 0.2),
+    0 0 36px rgba(var(--accent-rgb), 0.22);
+}
+
+@media (hover: hover) {
+  .card-surface.showcase-card--featured:hover {
+    border-color: rgba(var(--accent-rgb), 0.85);
+    box-shadow:
+      0 14px 40px rgba(0, 0, 0, 0.55),
+      0 0 0 1px rgba(var(--accent-rgb), 0.35),
+      0 0 52px rgba(var(--accent-rgb), 0.35);
+  }
+}
+
+@media (min-width: 768px) {
+  .showcase-card--featured {
+    min-height: 25rem;
+    justify-content: flex-end;
+  }
+
+  /* The genre moves into the text block as a kicker above the title. */
+  .showcase-card--featured .showcase-genre {
+    display: none;
+  }
+
+  .showcase-card--featured .showcase-cover {
+    position: absolute;
+    inset: 0;
+    aspect-ratio: auto;
+  }
+
+  /* Contrast comes from the gradient, not from the image: the lower half is
+     close to opaque navy, whatever the screenshot looks like. */
+  .showcase-card--featured .showcase-cover::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to top,
+      rgba(7, 11, 22, 0.97) 0%,
+      rgba(7, 11, 22, 0.88) 35%,
+      rgba(7, 11, 22, 0.35) 70%,
+      rgba(7, 11, 22, 0.1) 100%
+    );
+  }
+
+  .showcase-card--featured .showcase-kicker {
+    display: block;
+  }
+
+  .showcase-card--featured .showcase-body {
+    position: relative;
+    z-index: 1;
+    flex: 0 0 auto;
+    max-width: 38rem;
+    padding: 1.5rem 1.6rem 1.6rem;
+  }
+
+  .showcase-card--featured .showcase-title {
+    font-size: clamp(1.7rem, 2.6vw, 2.3rem);
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.6);
+  }
+
+  .showcase-card--featured .showcase-description {
+    color: var(--color-text-secondary);
+  }
+}
+
+/* ---------------------------------------------------------------- *
+ * Reduced motion: no zoom, no tilt, no lift. The spotlight stays,
+ * since it is a highlight rather than movement.
+ * ---------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .card-surface.showcase-card,
+  .card-surface.showcase-card:hover,
+  .card-surface.showcase-card.is-spotlit {
+    transform: none;
+  }
+
+  .showcase-card:hover .showcase-cover img,
+  .showcase-card:hover .showcase-tags .sw-tag,
+  .showcase-card .showcase-tags .sw-tag:hover {
+    transform: none;
+  }
+
+  /* View transitions are pseudo-elements the global reduced-motion rule does
+     not reach, so the cover and title morph is switched off explicitly. */
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+}
+
+/* ---------------------------------------------------------------- *
+ * Game post prose: highlighter on bold phrases
+ *
+ * Drawn by default. src/lib/motion.ts (initProseHighlight) marks the
+ * container with data-highlight-ready and adds .is-lit to each phrase as
+ * it scrolls in, so without JavaScript the highlight is simply there.
+ * ---------------------------------------------------------------- */
+.game-prose strong,
+.game-prose b {
+  color: var(--color-text-primary);
+  padding: 0 0.12em;
+  border-radius: 0.2em;
+  background-image: linear-gradient(
+    100deg,
+    rgba(var(--accent-rgb), 0.42),
+    rgba(var(--accent-rgb), 0.22)
+  );
+  background-repeat: no-repeat;
+  background-position: 0 88%;
+  background-size: 100% 38%;
+  /* Keeps the highlight on every line when a phrase wraps. */
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  transition:
+    background-size 650ms var(--motion-ease),
+    color var(--motion-fast) var(--motion-ease),
+    text-shadow var(--motion-fast) var(--motion-ease);
+}
+
+.game-prose[data-highlight-ready] strong,
+.game-prose[data-highlight-ready] b {
+  background-size: 0% 38%;
+}
+
+.game-prose[data-highlight-ready] strong.is-lit,
+.game-prose[data-highlight-ready] b.is-lit {
+  background-size: 100% 38%;
+}
+
+/* Hovering a phrase fills the marker up behind the whole word. */
+@media (hover: hover) {
+  .game-prose[data-highlight-ready] strong.is-lit:hover,
+  .game-prose[data-highlight-ready] b.is-lit:hover,
+  .game-prose:not([data-highlight-ready]) strong:hover,
+  .game-prose:not([data-highlight-ready]) b:hover {
+    background-size: 100% 100%;
+    color: #fff;
+    text-shadow: 0 0 14px rgba(var(--accent-rgb), 0.7);
+    transition-delay: 0ms;
+  }
+}
+
+/* Section headings in a post get a short accent bar. */
+.game-prose h3 {
+  position: relative;
+  padding-left: 0.85rem;
+  margin-top: 1.75rem;
+}
+
+.game-prose h3::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.15em;
+  bottom: 0.15em;
+  width: 4px;
+  border-radius: 4px;
+  background: linear-gradient(to bottom, var(--accent-light), var(--accent-dark));
+  box-shadow: 0 0 12px rgba(var(--accent-rgb), 0.5);
+}
+
+/* Headings in the posts are written as `### **About**`: their bold is
+   markdown habit, not emphasis, so they keep the plain heading look. */
+.game-prose :is(h1, h2, h3, h4) :is(strong, b) {
+  padding: 0;
+  background: none;
+  text-shadow: none;
+}

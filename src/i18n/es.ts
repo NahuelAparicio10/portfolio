@@ -34,6 +34,20 @@ export const es: TranslationSchema = {
     readingTime: 'min de lectura',
     allArticles: 'Todos los artículos',
     share: 'Compartir',
+    subtitle: 'Una selección de los juegos que he desarrollado y en los que he contribuido. Haz clic en ellos para ver más información.',
+  },
+  showcase: {
+    facts: {
+      year: 'Año',
+      engine: 'Motor',
+      team: 'Equipo',
+      duration: 'Duración',
+      platforms: 'Plataformas',
+      role: 'Rol',
+    },
+    featured: 'Destacado',
+    playVideo: 'Reproducir vídeo',
+    watchOnYouTube: 'Ver en YouTube',
   },
   skills: {
     expertiseTitle: 'ÁREAS DE ESPECIALIDAD',
@@ -79,6 +93,9 @@ export const es: TranslationSchema = {
   },
   projects: {
     title: 'Proyectos',
+    heading: 'PROYECTOS',
+    subtitle: 'Una muestra de los proyectos que he desarrollado y en los que he contribuido.',
+    metaDescription: 'Mejores proyectos.',
   },
   footer: {
     title: 'CONTACTO Y CV',

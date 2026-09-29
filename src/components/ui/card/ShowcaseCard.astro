@@ -1,0 +1,135 @@
+---
+import type { ImageMetadata } from 'astro';
+import { Image } from 'astro:assets';
+import DimensionBadge from '../badge/DimensionBadge.astro';
+
+/**
+ * One card for both the Games and the Projects grid, so the two sections share
+ * a single visual language instead of drifting apart again.
+ *
+ * Everything the visitor needs (title, fact sheet, description) is rendered
+ * visible. Pointer effects in `src/lib/showcase.ts` are decoration on top: a
+ * touch device, or a browser without JavaScript, still gets the full card.
+ */
+interface Tag {
+  label: string;
+  href?: string;
+}
+
+interface Props {
+  href: string;
+  title: string;
+  description?: string;
+  /** Local images are optimised by astro:assets; `public/` paths are served as-is. */
+  image?: ImageMetadata | string;
+  genre?: string;
+  dimension?: '2D' | '3D';
+  /** Short production facts, already localised: year, engine, team, duration. */
+  facts?: string[];
+  tags?: Tag[];
+  /** Label shown at the bottom, for cards whose link leaves the site. */
+  ctaText?: string;
+  external?: boolean;
+  /** Gets the large treatment in the grid's top row. */
+  featured?: boolean;
+  /** Localised label for the featured chip. Required for the chip to show. */
+  featuredLabel?: string;
+  /** Shared with the detail page so the cover and title morph across the navigation. */
+  transitionId?: string;
+  /** Resolved URL of a short muted clip. Fetched only on hover. */
+  videoPreview?: string;
+}
+
+const {
+  href,
+  title,
+  description,
+  image,
+  genre,
+  dimension,
+  facts = [],
+  tags = [],
+  ctaText,
+  external = false,
+  featured = false,
+  featuredLabel,
+  transitionId,
+  videoPreview,
+} = Astro.props as Props;
+
+const presentFacts = facts.filter(Boolean);
+// Set as a plain style rather than `transition:name`: the directive invents a
+// random name when given undefined, and project cards have no detail page to
+// morph into. <ClientRouter /> drives the transition either way.
+const coverStyle = transitionId ? `view-transition-name: cover-${transitionId}` : undefined;
+const titleStyle = transitionId ? `view-transition-name: title-${transitionId}` : undefined;
+---
+
+<article
+  class:list={['card-surface showcase-card', featured && 'showcase-card--featured']}
+  data-showcase-card
+>
+  <div class="showcase-cover" style={coverStyle}>
+    {image && (typeof image === 'string' ? (
+      <img src={image} alt="" width="1280" height="720" loading="lazy" decoding="async" />
+    ) : (
+      <Image
+        src={image}
+        alt=""
+        width={featured ? 1280 : 800}
+        height={featured ? 720 : 450}
+      />
+    ))}
+    {videoPreview && (
+      // No src on purpose: the clip is attached on first hover, so a visit that
+      // never hovers downloads nothing.
+      <video
+        class="showcase-preview"
+        data-src={videoPreview}
+        muted
+        loop
+        playsinline
+        preload="none"
+        aria-hidden="true"
+        tabindex="-1"
+      ></video>
+    )}
+    {genre && <span class="showcase-genre">{genre}</span>}
+    <div class="showcase-badges">
+      {featured && featuredLabel ? <span class="showcase-featured-chip">★ {featuredLabel}</span> : <span />}
+      {dimension && <DimensionBadge dimension={dimension} />}
+    </div>
+  </div>
+
+  <div class="showcase-body">
+    {featured && genre && <p class="showcase-kicker">{genre}</p>}
+    <h3 class="showcase-title" style={titleStyle}>{title}</h3>
+
+    {presentFacts.length > 0 && (
+      <ul class="showcase-facts">
+        {presentFacts.map((fact) => <li>{fact}</li>)}
+      </ul>
+    )}
+
+    {description && <p class="showcase-description">{description}</p>}
+
+    {tags.length > 0 && (
+      <div class="showcase-tags">
+        {tags.map((tag) => tag.href ? (
+          <a href={tag.href} class="sw-tag interactive-link">{tag.label}</a>
+        ) : (
+          <span class="sw-tag">{tag.label}</span>
+        ))}
+      </div>
+    )}
+
+    {ctaText && <span class="showcase-cta" aria-hidden="true">{ctaText}</span>}
+  </div>
+
+  <a
+    href={href}
+    class="stretched-link"
+    aria-label={title}
+    {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+  ></a>
+</article>

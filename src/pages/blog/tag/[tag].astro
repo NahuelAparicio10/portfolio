@@ -29,7 +29,7 @@ const meta = getTagMeta(tag);
         <h1 class="text-3xl font-bold">{meta.title}</h1>
         <a class="sw-btn-sm" href={`/rss/tag/${tag}.xml`}>Subscribe</a>
       </div>
-      <div class="blog-grid">
+      <div class="showcase-grid" data-showcase-grid>
         {posts.map((p) => (
           <PostCard post={p} />
         ))}
