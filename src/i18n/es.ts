@@ -18,7 +18,7 @@ export const es: TranslationSchema = {
   home: {
     role: 'Programador de Videojuegos',
     specialties: ['Gameplay', 'Herramientas', 'Automatización con IA'],
-    tagline: 'Construyo los sistemas del juego y las herramientas que los hacen posibles.',
+    tagline: 'Programo el puente entre el diseño y lo que siente el jugador.',
     ctaAbout: 'Sobre mí',
     ctaSkills: 'Skills',
     ctaGames: 'Juegos',

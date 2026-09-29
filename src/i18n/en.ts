@@ -13,7 +13,7 @@ export const en = {
     role: 'Game Programmer',
     /** Rotated in the hero. The first one is rendered server-side. */
     specialties: ['Gameplay', 'Tools', 'AI Automation'],
-    tagline: 'Building the systems, and the tools that build them.',
+    tagline: 'Coding the bridge between design and player experience.',
     ctaAbout: 'About Me',
     ctaSkills: 'Skills',
     ctaGames: 'Game Projects',
