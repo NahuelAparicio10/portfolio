@@ -3,7 +3,8 @@ import { getCollection } from 'astro:content';
 import BaseHead from '../../../components/BaseHead.astro';
 import Header from '../../../components/sections/Header.astro';
 import Footer from '../../../components/sections/Footer.astro';
-import BlogHero from '../../../components/sections/BlogHero.astro';
+import ShowcaseHero from '../../../components/sections/ShowcaseHero.astro';
+import { useTranslations } from '../../../i18n';
 import BlogAllArticles from '../../../components/sections/BlogAllArticles.astro';
 import BlogPagination from '../../../components/ui/nav/BlogPagination.astro';
 
@@ -15,6 +16,7 @@ export async function getStaticPaths() {
 }
 
 const PAGE_SIZE = 6;
+const t = useTranslations('en');
 const posts = (await getCollection('blog')).sort((a, b) => +b.data.pubDate - +a.data.pubDate);
 const { page } = Astro.params;
 const currentPage = Math.max(1, parseInt(page || '1', 10));
@@ -36,7 +38,7 @@ const totalPages = Math.max(1, Math.ceil(posts.length / PAGE_SIZE));
   </head>
   <body>
     <Header />
-    <BlogHero title="Game Projects" subtitle="Stories, notes, and learnings." />
+    <ShowcaseHero title={t.blog.title} subtitle={t.blog.subtitle} />
     <main class="mx-auto max-w-6xl px-4 py-8 space-y-10">
       <BlogAllArticles posts={pagePosts} />
       <BlogPagination currentPage={currentPage} totalPages={totalPages} />

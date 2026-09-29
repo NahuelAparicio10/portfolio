@@ -1,16 +1,17 @@
 ---
 import { href } from "../../../lib/href";
-import { getCollection, render } from 'astro:content';
+import { getCollection } from 'astro:content';
 import BaseHead from '../../../components/BaseHead.astro';
 import Footer from '../../../components/sections/Footer.astro';
 import Header from '../../../components/sections/Header.astro';
+import ShowcaseHero from '../../../components/sections/ShowcaseHero.astro';
 import BlogAllArticles from '../../../components/sections/BlogAllArticles.astro';
 import BlogPagination from '../../../components/ui/nav/BlogPagination.astro';
 import { SITE_DESCRIPTION, SITE_TITLE } from '../../../consts';
-import FeaturedPost from '../../../components/ui/card/FeaturedPost.astro';
-import GlowLineSeparator from '@/components/ui/separator/GlowLineSeparator.astro';
+import { useTranslations } from '../../../i18n';
 
 const PAGE_SIZE = 6;
+const t = useTranslations('es');
 
 const allPosts = await getCollection('es');
 
@@ -24,8 +25,6 @@ const rest = allPosts
 
 const firstPagePosts = rest.slice(0, PAGE_SIZE);
 const totalPages = Math.max(1, Math.ceil(rest.length / PAGE_SIZE));
-
-
 ---
 
 <!doctype html>
@@ -36,33 +35,13 @@ const totalPages = Math.max(1, Math.ceil(rest.length / PAGE_SIZE));
   </head>
   <body>
     <Header />
+    <ShowcaseHero title={t.blog.title} subtitle={t.blog.subtitle} />
 
-				<div class="mt-15 mb-7 mx-auto max-w-5xl px-4 text-center">
-					<h1 class="text-4xl md:text-6xl font-extrabold tracking-tight text-foreground">
-					<span class="bg-gradient-to-r from-[var(--accent)] to-[var(--accent-dark)] bg-clip-text text-transparent">
-						JUEGOS
-					</span>
-					</h1>
-					<p class="mt-4 text-lg md:text-xl text-[color:var(--color-text-secondary)] max-w-2xl mx-auto">
-Una selección de los juegos que he desarrollado y en los que he contribuido. Haz clic en ellos para ver más información.
-					</p>
-				</div>
-      <GlowLineSeparator/>
-
-    <main class="mt-5 use-utility-layout mx-auto max-w-5xl px-3 py-5 space-y-7">
-      {featuredPosts.length > 0 && (
-        <section class="grid grid-cols-1 gap-6">
-          {featuredPosts.map((p) => (
-            <article class="card-surface p-4 md:p-5 hover-lift sw-featured-card">
-              <FeaturedPost post={p} locale="es" />
-            </article>
-          ))}
-        </section>
-      )}
-      <br/>
-      <BlogAllArticles posts={firstPagePosts} locale="es" />
+    <main class="mt-5 use-utility-layout mx-auto max-w-6xl px-3 py-5 space-y-7">
+      <!-- Featured entries lead the grid and span two columns: the layout
+           itself signals importance, so no "Featured" badge is needed. -->
+      <BlogAllArticles posts={[...featuredPosts, ...firstPagePosts]} bento locale="es" />
       <BlogPagination currentPage={1} totalPages={totalPages} locale="es" />
-      <br/>
     </main>
 
     <Footer />

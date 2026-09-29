@@ -1,0 +1,29 @@
+---
+import GlowLineSeparator from '../ui/separator/GlowLineSeparator.astro';
+
+/**
+ * Header shared by the Games and Projects sections, including the paginated
+ * games pages. Before this, `blog/index.astro` carried its own hand-written
+ * copy and the paginated pages used a different one.
+ */
+interface Props {
+  title: string;
+  subtitle?: string;
+}
+
+const { title, subtitle } = Astro.props as Props;
+---
+
+<header class="mt-15 mb-7 mx-auto max-w-5xl px-4 text-center">
+  <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight text-foreground">
+    <span class="bg-gradient-to-r from-[var(--accent)] to-[var(--accent-dark)] bg-clip-text text-transparent">
+      {title}
+    </span>
+  </h1>
+  {subtitle && (
+    <p class="mt-4 text-lg md:text-xl text-[color:var(--color-text-secondary)] max-w-2xl mx-auto">
+      {subtitle}
+    </p>
+  )}
+</header>
+<GlowLineSeparator />
