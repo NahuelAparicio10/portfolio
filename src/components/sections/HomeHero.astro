@@ -237,30 +237,45 @@ const ctas = [
 <script>
   const ROTATION_MS = 1500;
 
+  let rotationTimer = 0;
+
   function startRotator(rotator: HTMLElement) {
     const items = Array.from(rotator.querySelectorAll<HTMLElement>('[data-specialty]'));
     if (items.length < 2) return;
 
     let index = 0;
-    window.setInterval(() => {
+    rotationTimer = window.setInterval(() => {
       items[index].classList.remove('is-active');
       index = (index + 1) % items.length;
       items[index].classList.add('is-active');
     }, ROTATION_MS);
   }
 
-  // Respect the OS setting: with reduced motion the CSS shows all specialties
-  // at once, so rotating them would fight that layout.
-  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    document.querySelectorAll<HTMLElement>('[data-rotator]').forEach(startRotator);
-  } else {
-    // CSS already hid the video, but a hidden <video> can still buffer.
-    // Dropping the source stops the download outright.
-    document.querySelectorAll<HTMLVideoElement>('[data-hero-video]').forEach((video) => {
-      video.removeAttribute('autoplay');
-      video.pause();
-    });
+  // Runs on astro:page-load rather than at the top level: a module script
+  // executes once per session, so after <ClientRouter /> brought the visitor
+  // back to the home page the fresh markup never got a rotator.
+  function initHero() {
+    window.clearInterval(rotationTimer);
+
+    // Respect the OS setting: with reduced motion the CSS shows all specialties
+    // at once, so rotating them would fight that layout.
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      document.querySelectorAll<HTMLElement>('[data-rotator]').forEach(startRotator);
+    } else {
+      // CSS already hid the video, but a hidden <video> can still buffer.
+      // Dropping the source stops the download outright.
+      document.querySelectorAll<HTMLVideoElement>('[data-hero-video]').forEach((video) => {
+        video.removeAttribute('autoplay');
+        video.pause();
+      });
+    }
   }
+
+  document.addEventListener('astro:page-load', initHero);
+
+  // The interval would otherwise keep ticking against detached elements on
+  // every other page.
+  document.addEventListener('astro:before-swap', () => window.clearInterval(rotationTimer));
 
   // ---------------------------------------------------------------------
   // Background layer: video (default) or generative shader.
